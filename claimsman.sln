@@ -15,6 +15,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4EEE79F7-ED20-4157-8FED-E68EBC8ADD7E}"
 	ProjectSection(SolutionItems) = preProject
 		doc\claimsman.png = doc\claimsman.png
+		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
