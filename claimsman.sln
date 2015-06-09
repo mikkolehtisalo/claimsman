@@ -12,13 +12,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "claimsman Package", "claims
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "claimsman-service", "claimsman-service\claimsman-service.vcxproj", "{94D87672-E0C9-4DA6-82B7-B76579A73DAD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E6B110BA-910C-4062-AF20-B618754A1C9C}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\Desktop\claimsman.png = ..\..\..\..\Desktop\claimsman.png
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4EEE79F7-ED20-4157-8FED-E68EBC8ADD7E}"
 	ProjectSection(SolutionItems) = preProject
+		doc\claimsman.png = doc\claimsman.png
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -175,8 +171,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{E6B110BA-910C-4062-AF20-B618754A1C9C} = {4EEE79F7-ED20-4157-8FED-E68EBC8ADD7E}
 	EndGlobalSection
 EndGlobal
