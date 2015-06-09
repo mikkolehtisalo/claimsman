@@ -8,7 +8,7 @@ Claimsman logs all file handle creations on Windows systems, and logs them to bo
 
 The application consists of a kernel driver, and an application (windows service) that forwards the data to Graylog installation. The outcome will look something like:
 
-![Screenshot from Graylog](https://raw.githubusercontent.com/mikkolehtisalo/morganfield/master/README.md "Working principle")
+![Screenshot from Graylog](https://raw.githubusercontent.com/mikkolehtisalo/claimsman/master/doc/claimsman.png "Screenshot from Graylog")
 
 Features
 --------
