@@ -17,12 +17,13 @@ Features
 --------
 
 * Local file, containing JSON, saved
-* Log forwarding done with GELF (HTTP)
+* Log forwarding done with GELF (HTTP, HTTPS)
 * Can recover from temporary server availability issues
 * Ability to ignore users (for instance service accounts) by SID  (see the claimsman.inf for details)
 * Ability to select what files get logged by extension (see the claimsman.inf for details)
 * Automatically monitors also shares, and removable devices
 * Extendable (log a copy of the accessed files, etc)
+* Does not block cross-platform usage (similar logs from Linux systems etc can be forwarded to same solution, using same format)
 
 Currently the following information is logged:
 
