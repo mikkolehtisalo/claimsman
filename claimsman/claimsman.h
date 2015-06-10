@@ -30,7 +30,9 @@ typedef struct _CLAIMSMAN_MESSAGE {
 	__int64 size;
 
 	// Unix timestamp + 3 decimals for milliseconds
-	__int64 lastModified;
+	__int64 UnixLastModified;
+	// TimeStamp as ISO-8601
+	WCHAR LastModified[CLAIMSMAN_MESSAGE_TIMESTAMP_SIZE];
 
 } CLAIMSMAN_MESSAGE;
 

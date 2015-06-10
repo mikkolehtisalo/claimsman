@@ -618,11 +618,14 @@ _In_ LONGLONG modified
 	// Size
 	message->size = size;
 	// Last modified
-	message->lastModified = modified;
-
-	// Timestamp
-	LARGE_INTEGER st;
 	TIME_FIELDS  tf;
+	message->UnixLastModified = modified;
+	LONGLONG tstmp = (modified * 10000) + DIFF_TO_UNIX_EPOCH;
+	RtlTimeToTimeFields(&tstmp, &tf);
+	RtlStringCchPrintfW((NTSTRSAFE_PWSTR)message->LastModified, CLAIMSMAN_MESSAGE_TIMESTAMP_SIZE - 1, L"%04u-%02u-%02uT%02u:%02u:%02u.%03uZ", tf.Year, tf.Month, tf.Day, tf.Hour, tf.Minute, tf.Second, tf.Milliseconds);
+
+	// Event timestamp
+	LARGE_INTEGER st;
 	KeQuerySystemTime(&st);
 	// Store as timestamp (Unix epoch + 3 decimals for milliseconds)
 	message->UnixTimeStamp = (st.QuadPart - DIFF_TO_UNIX_EPOCH) / 10000;
@@ -700,7 +703,6 @@ _Inout_ LONGLONG *modified
 
 
 	*modified = (basicFileInfo.ChangeTime.QuadPart - DIFF_TO_UNIX_EPOCH) / 10000;
-	//*size = standardFileInfo.AllocationSize.QuadPart;
 	*size = standardFileInfo.EndOfFile.QuadPart;
 
 	ZwClose(FileHandle);
@@ -818,8 +820,6 @@ The return value is the status of the operation.
 			LONGLONG size;
 			LONGLONG modified;
 			getSizeModified(FltObjects->Instance, fileName, &size, &modified);
-			//PT_DBG_PRINT(PTDBG_TRACE_ROUTINES,
-			//	("claimsman!claimsmanPostOperation: size=%I64d modified=%I64d\n", size, modified));
 
 			InitializeMessage(&msg, &sidString, fileName, FltObjects->FileObject->ReadAccess, FltObjects->FileObject->WriteAccess, FltObjects->FileObject->DeleteAccess, size, modified);
 

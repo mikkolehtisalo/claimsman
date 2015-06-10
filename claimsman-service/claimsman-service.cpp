@@ -101,7 +101,10 @@ FALSE - Operation failed
 		// Seconds since UNIX epoch with optional decimal places for milliseconds; SHOULD be set by client library. Will be set to NOW by server if absent.
 		double ts;
 		ts = (double)item->UnixTimeStamp / (double)1000;
+		// Graylog automatically parses and converts this
 		gelf[U("timestamp")] = web::json::value::number(ts);
+		// ... But not this.
+		gelf[U("_unixtimestamp")] = web::json::value::number(ts);
 		// The level equal to the standard syslog levels; optional, default is 1 (ALERT).
 		gelf[U("level")] = web::json::value::number(5); // NOTICE
 		// Type for assisting in searching
@@ -131,8 +134,9 @@ FALSE - Operation failed
 		}
 		
 		// Last modified
-		ts = (double)item->lastModified / (double)1000;
-		gelf[U("_modified")] = web::json::value::number(ts);
+		ts = (double)item->UnixLastModified / (double)1000;
+		gelf[U("_unixlastmodified")] = web::json::value::number(ts);
+		gelf[U("_lastmodified")] = web::json::value::string(item->LastModified);
 	}
 	catch (const web::json::json_exception& e)
 	{
@@ -141,6 +145,8 @@ FALSE - Operation failed
 		std::wcout << L"buildGelf: " << ss.str();
 		return FALSE;
 	}
+
+	std::wcout << gelf.serialize() << std::endl;
 	return TRUE;
 }
 
@@ -479,8 +485,9 @@ buildQueueObject(
 _In_ wchar_t *FileName,
 _In_ wchar_t *Sid,
 _In_ wchar_t *Timestamp,
+_In_ wchar_t *modified,
 _In_ __int64 unixTimestamp,
-_In_ __int64 modified,
+_In_ __int64 unixModified,
 _In_ __int64 size,
 _In_ bool ReadAccess,
 _In_ bool WriteAccess,
@@ -540,7 +547,10 @@ FALSE - operation failed
 	object->UnixTimeStamp = unixTimestamp;
 
 	// Last modified
-	object->lastModified = modified;
+	object->UnixLastModified = unixModified;
+
+	// Last modified string
+	object->LastModified = _wcsdup(modified);
 
 	// Accesses
 	object->ReadAccess = ReadAccess;
@@ -760,8 +770,9 @@ All the others - error
 			buildQueueObject(msg.Message.FileName,
 				msg.Message.Sid,
 				msg.Message.TimeStamp,
+				msg.Message.LastModified,
 				msg.Message.UnixTimeStamp,
-				msg.Message.lastModified,
+				msg.Message.UnixLastModified,
 				msg.Message.size,
 				msg.Message.ReadAccess,
 				msg.Message.WriteAccess,

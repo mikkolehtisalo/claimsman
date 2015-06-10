@@ -9,7 +9,7 @@ Claimsman logs all file handle creations on Windows systems, and logs them to bo
 * What files has user X accessed within defined time frame?
 * Who has accessed file X within defined time frame?
 
-The application consists of a kernel driver, and an application (windows service) that forwards the data to Graylog installation. The outcome will look something like:
+The application consists of a kernel driver, and an application (windows service) that forwards the data to log management system. The outcome will look something like:
 
 ![Screenshot from Graylog](https://raw.githubusercontent.com/mikkolehtisalo/claimsman/master/doc/claimsman.png "Screenshot from Graylog")
 
@@ -28,9 +28,20 @@ Currently the following information is logged:
 
 | Field			| Description           | Example  |
 | ------------- |-------------|-----|
-|  | right-aligned |  |
-|     | centered      |    |
-|  | are neat      |     |
+| filename | Filename with full device and path | \\Device\\HarddiskVolume4\\Users\\bakteeri\\Desktop\\KMCS_Walkthrough.doc |
+| message | Summary message | Claimsman: bakteeri@Lahna \Device\HarddiskVolume4\Users\bakteeri\Desktop\KMCS_Walkthrough.doc |
+| logtype | Type of log event | claimsman |
+| sid | SID of the user | S-1-5-21-3211507568-3023894989-1537079942-1001 |
+| username | User | bakteeri@Lahna |
+| size | File size | 1983488 |
+| source | DNS of the sending computer | Lahna |
+| readaccess | File handle was created for reading | true  |
+| writeaccess | File handle was created for writing | true |
+| deleteaccess | File handle was created for deleting | true |
+| lastmodified | Last modification, timestamp as ISO-8601 | 2015-06-10T13:45:58.419Z |
+| unixlastmodified | Last modification, unix timestamp + 3 digits for milliseconds |  1433943958.419 |
+| Timestamp | Timestamp of the event | 2015-06-10 13:45:59.420 +00:00 |
+| unixtimestamp | Timestamp of the event, unix timestamp + 3 digits for milliseconds | 1433944519.073 |
 
 Requirements
 ------------
@@ -45,7 +56,7 @@ Requirements
 Configuration options
 ---------------------
 
-The following registry keys are used to configure claimsman:
+The following registry keys are available:
 
 | Field			| Description           | Example  |
 | ------------- |-------------|-----|
@@ -55,17 +66,14 @@ The following registry keys are used to configure claimsman:
 | HKEY_LOCAL_MACHINE\SOFTWARE\Claimsman\LogFile | Location of the log file    |  c:\logs\activity.log   |
 | HKEY_LOCAL_MACHINE\SOFTWARE\Claimsman\LogServer | Target server (Graylog/HTTP)  |  http://192.168.1.200:12201   |
 
-Packaging
----------
+Packaging & Installation
+------------------------
 
-1. Install your certificates for signing the driver
+1. Setup your certificates for signing the driver
+1. Build solution
 1. Package the driver - the provided INF should be informative enough, set the SIDs and file extensions
-1. Package the service - set the registry keys for logging locations
-```
-HKLM -> Software -> Claimsman -> LogFile
-// Example c:\activity.log
-HKLM -> Software -> Claimsman -> LogServer
-// Example http://myserver.mydomain:1201
-```
-1. Distribute
+1. Package the service
+1. Make sure all configuration options (registry keys) are correct
+1. Test
+1. Mass deploy
 
