@@ -751,9 +751,21 @@ The return value is the status of the operation.
 	PUNICODE_STRING fileName = NULL;
 	PTOKEN_USER pTokenUser = NULL;
 	UNICODE_STRING sidString;
-
+	
 	LARGE_INTEGER Timeout;
 	Timeout.QuadPart = (LONGLONG)1 * 10 * 1000 * 1000;
+	
+	// If there is no client registered, bail out immediately!
+	// If the event is from kernel, bail out immediately!
+	// If the event check for existence of file, bail out immediately!
+	if (
+		(ClaimsmanData.ClientPort == NULL) || 
+		(Data->RequestorMode == KernelMode) ||
+		(Data->IoStatus.Information == FILE_DOES_NOT_EXIST) ||
+		(Data->IoStatus.Information == FILE_EXISTS)
+		) {
+		return FLT_POSTOP_FINISHED_PROCESSING;
+	}
 
 	//  We got a log record, if there is a file object, get its name.
 

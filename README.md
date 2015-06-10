@@ -4,7 +4,7 @@ Claimsman
 Introduction
 ------------
 
-Claimsman logs all file handle creations on Windows systems, and logs them to both a local file and centralized log management system. The goal is to collect information that helps in answering the following two questions:
+Claimsman logs all file handle creation on Windows systems, and logs to both a local file and centralized log management system. The goal is to collect information that helps in answering the following two questions:
 
 * What files has user X accessed within defined time frame?
 * Who has accessed file X within defined time frame?
@@ -28,7 +28,7 @@ Currently the following information is logged:
 
 | Field			| Description           | Example  |
 | ------------- |-------------|-----|
-| filename | Filename with full device and path | \\Device\\HarddiskVolume4\\Users\\bakteeri\\Desktop\\KMCS_Walkthrough.doc |
+| filename | Filename with full device and path | \\\\Device\\\\HarddiskVolume4\\\\Users\\\\bakteeri\\\\Desktop\\\\KMCS_Walkthrough.doc |
 | message | Summary message | Claimsman: bakteeri@Lahna \Device\HarddiskVolume4\Users\bakteeri\Desktop\KMCS_Walkthrough.doc |
 | logtype | Type of log event | claimsman |
 | sid | SID of the user | S-1-5-21-3211507568-3023894989-1537079942-1001 |
