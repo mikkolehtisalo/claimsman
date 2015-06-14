@@ -1,5 +1,6 @@
 Claimsman
 ===========
+![Coverity Scan Build Status](https://scan.coverity.com/projects/5454/badge.svg)
 
 Introduction
 ------------
