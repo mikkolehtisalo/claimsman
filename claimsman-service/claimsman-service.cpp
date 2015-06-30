@@ -59,6 +59,9 @@ No return value.
 	if (item->Username) {
 		GlobalFree(item->Username);
 	}
+	if (item->Status) {
+		GlobalFree(item->Status);
+	}
 	free(item);
 }
 
@@ -137,6 +140,10 @@ FALSE - Operation failed
 		ts = (double)item->UnixLastModified / (double)1000;
 		gelf[U("_unixlastmodified")] = web::json::value::number(ts);
 		gelf[U("_lastmodified")] = web::json::value::string(item->LastModified);
+
+		// Status
+		gelf[U("_status")] = web::json::value::string(item->Status);
+
 	}
 	catch (const web::json::json_exception& e)
 	{
@@ -480,6 +487,36 @@ LPWSTR - Computer name, fqdn
 	}
 }
 
+std::wstring 
+GetErrorAsString
+(
+_In_ NTSTATUS status
+)
+/*++
+
+Routine Description:
+
+Formats NTSTATUS values (see ntstatus.h) as text.
+
+Arguments:
+
+status - The status value
+
+Return Value:
+
+std::wstring - NTSTATUS formatted as text.
+
+--*/
+{
+	LPTSTR messageBuffer = nullptr;
+	size_t size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL, status, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&messageBuffer, 0, NULL);
+	std::wstring message(messageBuffer, size);
+	//Free the buffer.
+	LocalFree(messageBuffer);
+	return message;
+}
+
 BOOLEAN
 buildQueueObject(
 _In_ wchar_t *FileName,
@@ -492,6 +529,7 @@ _In_ __int64 size,
 _In_ bool ReadAccess,
 _In_ bool WriteAccess,
 _In_ bool DeleteAccess,
+_In_ NTSTATUS status,
 _Inout_ CLAIMSMAN_JSON_FIELDS *object
 )
 /*++
@@ -565,6 +603,12 @@ FALSE - operation failed
 	// Not written to log file yet
 	object->loggedToFile = false;
 
+	// Status
+	std::wstring strStatus = GetErrorAsString(status);
+	const wchar_t * tmp = strStatus.c_str();
+	object->Status = (wchar_t*)GlobalAlloc(GMEM_FIXED, wcslen(tmp));
+	object->Status = _wcsdup(tmp);
+	
 	GlobalFree(user);
 	GlobalFree(domain);
 
@@ -774,6 +818,7 @@ All the others - error
 				msg.Message.ReadAccess,
 				msg.Message.WriteAccess,
 				msg.Message.DeleteAccess,
+				msg.Message.Status,
 				fields);
 
 			runtime.workQueue.push(fields);

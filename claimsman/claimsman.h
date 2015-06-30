@@ -34,6 +34,9 @@ typedef struct _CLAIMSMAN_MESSAGE {
 	// TimeStamp as ISO-8601
 	WCHAR LastModified[CLAIMSMAN_MESSAGE_TIMESTAMP_SIZE];
 
+	// IOStatus
+	NTSTATUS Status;
+
 } CLAIMSMAN_MESSAGE;
 
 typedef struct _CLAIMSMAN_DATA {
@@ -105,7 +108,8 @@ _In_ BOOLEAN ReadAccess,
 _In_ BOOLEAN WriteAccess,
 _In_ BOOLEAN DeleteAccess,
 _In_ LONGLONG size,
-_In_ LONGLONG modified
+_In_ LONGLONG modified,
+_In_ NTSTATUS status
 );
 
 NTSTATUS

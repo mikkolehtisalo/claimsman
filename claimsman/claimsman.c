@@ -583,7 +583,8 @@ _In_ BOOLEAN ReadAccess,
 _In_ BOOLEAN WriteAccess,
 _In_ BOOLEAN DeleteAccess,
 _In_ LONGLONG size,
-_In_ LONGLONG modified
+_In_ LONGLONG modified,
+_In_ NTSTATUS status
 )
 /*
 ...
@@ -623,6 +624,9 @@ _In_ LONGLONG modified
 	LONGLONG tstmp = (modified * 10000) + DIFF_TO_UNIX_EPOCH;
 	RtlTimeToTimeFields(&tstmp, &tf);
 	RtlStringCchPrintfW((NTSTRSAFE_PWSTR)message->LastModified, CLAIMSMAN_MESSAGE_TIMESTAMP_SIZE - 1, L"%04u-%02u-%02uT%02u:%02u:%02u.%03uZ", tf.Year, tf.Month, tf.Day, tf.Hour, tf.Minute, tf.Second, tf.Milliseconds);
+
+	// Iostatus
+	message->Status = status;
 
 	// Event timestamp
 	LARGE_INTEGER st;
@@ -829,7 +833,7 @@ The return value is the status of the operation.
 			LONGLONG modified;
 			getSizeModified(FltObjects->Instance, fileName, &size, &modified);
 
-			InitializeMessage(&msg, &sidString, fileName, FltObjects->FileObject->ReadAccess, FltObjects->FileObject->WriteAccess, FltObjects->FileObject->DeleteAccess, size, modified);
+			InitializeMessage(&msg, &sidString, fileName, FltObjects->FileObject->ReadAccess, FltObjects->FileObject->WriteAccess, FltObjects->FileObject->DeleteAccess, size, modified, Data->IoStatus.Status);
 
 			// Ready, send the message!
 			// But only if there's a client connected

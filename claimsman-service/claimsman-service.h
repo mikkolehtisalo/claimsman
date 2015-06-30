@@ -24,6 +24,7 @@ typedef struct _CLAIMSMAN_JSON_FIELDS {
 	wchar_t *LastModified;
 	__int64 UnixLastModified;
 	bool loggedToFile;
+	wchar_t *Status;
 } CLAIMSMAN_JSON_FIELDS;
 
 typedef struct _CLAIMSMAN_RUNTIME {
@@ -44,6 +45,7 @@ typedef struct _CLAIMSMAN_RUNTIME {
 	HANDLE logFile;
 
 } CLAIMSMAN_RUNTIME;
+
 typedef struct _CLAIMSMAN_MESSAGE {
 
 	// File name
@@ -70,6 +72,9 @@ typedef struct _CLAIMSMAN_MESSAGE {
 	__int64 UnixLastModified;
 	// TimeStamp as ISO-8601
 	WCHAR LastModified[CLAIMSMAN_MESSAGE_TIMESTAMP_SIZE];
+
+	// IOStatus
+	NTSTATUS Status;
 
 } CLAIMSMAN_MESSAGE;
 

@@ -42,6 +42,7 @@ Currently the following information is logged:
 | unixlastmodified | Last modification, unix timestamp + 3 digits for milliseconds |  1433943958.419 |
 | Timestamp | Timestamp of the event | 2015-06-10 13:45:59.420 +00:00 |
 | unixtimestamp | Timestamp of the event, unix timestamp + 3 digits for milliseconds | 1433944519.073 |
+| status | Status of the file operation. See ntstatus.h for more information. | The operation completed successfully. |
 
 Requirements
 ------------
