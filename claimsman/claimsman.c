@@ -813,18 +813,14 @@ The return value is the status of the operation.
 			else {
 				// No point continuing because we obviously did not get a valid SID
 				FltReleaseFileNameInformation(nameInfo);
-				if (pTokenUser != NULL) {
-					ExFreePool(pTokenUser);
-				}
+				ExFreePool(pTokenUser);
 				return FLT_POSTOP_FINISHED_PROCESSING;
 			}
 
 			if (ClaimsmanCheckUserIgnore(&sidString)) {
 				// Ignored user! Bail out!
 				FltReleaseFileNameInformation(nameInfo);
-				if (pTokenUser != NULL) {
-					ExFreePool(pTokenUser);
-				}
+				ExFreePool(pTokenUser);
 				RtlFreeUnicodeString(&sidString);
 				return FLT_POSTOP_FINISHED_PROCESSING;
 			}

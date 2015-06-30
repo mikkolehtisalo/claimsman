@@ -565,12 +565,9 @@ FALSE - operation failed
 	// Not written to log file yet
 	object->loggedToFile = false;
 
-	if (user) {
-		GlobalFree(user);
-	}
-	if (domain) {
-		GlobalFree(domain);
-	}
+	GlobalFree(user);
+	GlobalFree(domain);
+
 	return true;
 }
 
