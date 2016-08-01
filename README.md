@@ -80,3 +80,5 @@ Packaging & Installation
 1. Test
 1. Mass deploy
 
+Please notice that from Windows 10 Build 1607 the driver must be signed by [Microsoft Dev Portal](https://blogs.msdn.microsoft.com/windows_hardware_certification/2016/07/26/driver-signing-changes-in-windows-10-version-1607/).
+
